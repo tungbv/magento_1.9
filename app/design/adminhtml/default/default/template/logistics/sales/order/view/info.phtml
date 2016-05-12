@@ -1,0 +1,297 @@
+<?php
+/**
+ * Smartsend_Logistics
+ *
+ * This source file is subject to the GNU General Public License v3.0
+ * that is bundled with this package in the file license.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@smartsend.dk so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the plugin to newer
+ * versions in the future. If you wish to customize the plugin for your
+ * needs please refer to http://www.smartsend.dk
+ *
+ * @folder		/app/design/adminhtml/default/default/template/logistics/sales/order/view/info.phtml
+ * @category	Smartsend
+ * @package		Smartsend_Logistics
+ * @author		Anders Bilfeldt
+ * @url			www.smartsend.dk
+ */
+$_order = $this->getOrder();             //getting order details
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);        //admin date of order
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);     //store date of order
+?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php
+        if ($_order->getEmailSent()):
+            $_email = $this->__('the order confirmation email was sent');
+        else:
+            $_email = $this->__('the order confirmation email was not sent');
+        endif;
+        ?>
+        <div class="entry-edit-head">
+            <?php if ($this->getNoUseOrderLink()): ?>                                          <!-- links with on onclick event -->
+                <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>    <!-- orderid of the order -->  
+            <?php else: ?>
+                <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?></a>          <!-- orderid of the order -->  
+                <strong>(<?php echo $_email ?>)</strong>
+            <?php endif; ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Order Date') ?></label></td>
+                    <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+                </tr>
+                <?php if ($orderAdminDate != $orderStoreDate): ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                        <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Order Status') ?></label></td>
+                    <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>           <!-- current status of the order -->  
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo $this->__('Purchased From') ?></label></td>
+                    <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>                      <!-- purchased store of the order -->  
+                </tr>
+                <?php if ($_order->getRelationChildId()): ?>                                    <!-- order that links to the other child order -->  
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Link to the New Order') ?></label></td>
+                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
+                                <?php echo $_order->getRelationChildRealId() ?>
+                            </a></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getRelationParentId()): ?>                                         <!-- order that links to the other parent order -->  
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Link to the Previous Order') ?></label></td>
+                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
+                                <?php echo $_order->getRelationParentRealId() ?>
+                            </a></td>
+                    </tr>
+                <?php endif; ?>
+                <?php
+                $magentoVersion = Mage::getVersion();                             //getting magento version
+                if (version_compare($magentoVersion, '1.7.0.2', '>=')) {
+                    ?>
+                    <?php if ($_order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
+                        <tr>
+                            <td class="label"><label><?php echo $this->__('Placed from IP') ?></label></td>
+                            <td class="value"><strong><?php
+                                    echo $_order->getRemoteIp();                                             //ip from where order is placed
+                                    echo ($_order->getXForwardedFor()) ? ' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')' : '';
+                                    ?></strong></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php
+                } else {
+                    if ($_order->getRemoteIp()):
+                        ?>
+                        <tr>
+                            <td class="label"><label><?php echo $this->__('Placed from IP') ?></label></td>
+                            <td class="value"><strong><?php
+                                    echo $_order->getRemoteIp();
+                                    echo ($_order->getXForwardedFor()) ? ' (' . $_order->getXForwardedFor() . ')' : '';
+                                    ?></strong></td>
+                        </tr>
+                        <?php
+                    endif;
+                }
+                ?>
+
+                <?php if ($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>                       <!-- order currency codes -->  
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                        <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if ($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                        <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+                    </tr>
+                <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo $this->__('Account Information') ?></h4>
+            <div class="tools"><?php echo $this->getAccountEditLink() ?></div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Customer Name') ?></label></td>
+                        <td class="value">
+                            <?php if ($_customerUrl = $this->getCustomerViewUrl()) : ?>                                  <!-- customer profile url -->  
+                                <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong></a>         <!-- customer name -->  
+                            <?php else: ?>
+                                <strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label><?php echo $this->__('Email') ?></label></td>
+                        <td class="value"><a href="mailto:<?php echo $_order->getCustomerEmail() ?>"><strong><?php echo $_order->getCustomerEmail() ?></strong></a></td>         <!-- customer email -->  
+                    </tr>
+                    <?php if ($_groupName = $this->getCustomerGroupName()) : ?>                                            <!-- customer group -->  
+                        <tr>
+                            <td class="label"><label><?php echo $this->__('Customer Group') ?></label></td>
+                            <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php foreach ($this->getCustomerAccountData() as $data): ?>
+                        <tr>
+                            <td class="label"><label><?php echo $data['label'] ?></label></td>
+                            <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo $this->__('Billing Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getBillingAddress()) ?></div>                  <!-- customers billing address -->  
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+    <div class="box-right">
+        <!--Shipping Address-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head head-shipping-address"><?php echo $this->__('Shipping Address') ?></h4>
+                <div class="tools"><?php echo $this->getAddressEditLink($_order->getShippingAddress()) ?></div>                 <!-- shipping address -->  
+            </div>
+            <fieldset>
+                <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+            </fieldset>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <?php
+endif;
+
+// Smart Send
+$smartsendorder = Mage::getModel('logistics/ordermagento');
+$smartsendorder->setOrderObject($_order);
+
+if( $smartsendorder->isSmartsendOrVConnect() ):     ?>
+    <div class="box-left">
+        <!--Smart Send Pickup-->
+        <div class="entry-edit">
+            <div class="entry-edit-head">
+                <h4 class="icon-head"><?php echo $this->__('Smart Send Logistics') ?></h4>
+            </div>
+            <fieldset>
+            	<table cellspacing="0" class="form-list">
+                	<tbody>
+						<tr>
+							<td class="label"><label><?php echo $this->__('Shipping method').': '; ?></label></td>
+							<td class="value"><strong><?php echo $_order->getShippingDescription(); ?></label></td>
+						</tr>
+			<?php
+			$order_id = $_order->getId();                                             //order id
+
+			if (($temp = strlen($_order->getShippingMethod()) - strlen('pickup')) >= 0 && strpos($_order->getShippingMethod(), 'pickup', $temp) !== FALSE) {
+
+				if ($_order->getShippingMethod() == "smartsendgls_pickup") {      //smartsend shipping address
+					$pickupModel = Mage::getModel('logistics/gls');
+				} elseif ($_order->getShippingMethod() == "smartsendpostdanmark_pickup") {
+					$pickupModel = Mage::getModel('logistics/postdanmark');
+				} elseif ($_order->getShippingMethod() == "smartsendposten_pickup") {
+					$pickupModel = Mage::getModel('logistics/posten');
+				} elseif ($_order->getShippingMethod() == "smartsendbring_pickup") {
+					$pickupModel = Mage::getModel('logistics/bring');
+				}
+
+				if ($pickupModel) {
+					$pickupData = $pickupModel->getCollection()->addFieldToFilter('order_id', $order_id)->getFirstItem();        //pickup data 
+					?>
+						<tr>
+							<td class="label"><label><?php echo $this->__("Pickuppoint"); ?></label></td>
+					<?php
+					if ($pickupData->getData()) {
+						if ($pickupData->getPickUpId() != '' && $pickupData->getPickUpId() != '000') {
+							?>
+							<td class="value"><strong><?php echo $this->__("ID") .': '. $pickupData->getPickUpId().'<br>'.$pickupData->getCompany() . "<br>" . $pickupData->getStreet() . "<br>" .$pickupData->getCountry() . ' ' . $pickupData->getZip() . " " . $pickupData->getCity(); ?></label></td>
+							<?php
+						} else {
+							?>
+							<td class="value"><strong><?php echo $this->__("Shipping to closest pickup point"); ?></label></td>
+							<?php
+						}
+					} else {
+							?>
+							<td class="value"><strong><?php echo $this->__("Shipping to closest pickup point"); ?></label></td>
+							<?php
+					}
+					?>
+						<tr>
+					<?php
+				}
+			}
+
+			$carrier = explode('_', $_order->getShippingMethod());
+
+			if ($carrier[0] == 'smartsendpostdanmark' || $carrier[0] == 'smartsendposten') {
+				$flexModel = Mage::getModel('logistics/flex');
+				$flexData = $flexModel->getCollection()->addFieldToFilter('order_id', $order_id)->getFirstItem();        //pickup data 
+				if ($flexData->getData()) {
+					?>
+						<tr>
+					<?php
+					if ($flexData->getFlexnote() != '') {
+							?>
+							<td class="label"><label><?php echo $this->__("Flexdelivery"); ?></label></td>
+							<td class="value"><strong><?php echo $flexData->getFlexnote(); ?></label></td>
+							<?php
+					} else {
+							?>
+							<td class="value"><strong><?php echo $this->__("Flexdelivery instruction not available"); ?></label></td>
+							<?php
+					}
+					?>
+						<tr>
+					<?php
+				}
+			}
+			?>
+					</tbody>
+				</table>
+				<div class="clear"></div>
+				<div style="float: right" >
+					<input type="button" class="form-button" value="<?php echo Mage::helper('logistics')->__('Generate label') ?>" title="<?php echo Mage::helper('logistics')->__('Generate label') ?>" onclick="setLocation('<?php echo $this->getUrl("*/logistics/labelNormal",array('order_id' => $_order->getId())); ?>')"/>
+					<input type="button" class="form-button" value="<?php echo Mage::helper('logistics')->__('Generate return label') ?>" title="<?php echo Mage::helper('logistics')->__('Generate return label') ?>" onclick="setLocation('<?php echo $this->getUrl("*/logistics/labelReturn",array('order_id' => $_order->getId())); ?>')" />
+					<input type="button" class="form-button" value="<?php echo Mage::helper('logistics')->__('Generate normal and return label') ?>" title="<?php echo Mage::helper('logistics')->__('Generate normal and return label') ?>" onclick="setLocation('<?php echo $this->getUrl("*/logistics/labelNormalReturn",array('order_id' => $_order->getId())); ?>')" />
+				</div>
+			</fieldset>
+        </div>
+    </div>
+    <div class="clear"></div>
+<?php endif; ?>

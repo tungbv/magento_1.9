@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>                      <!-- system config section -->
+        <carriers>
+            <groups>
+            	<smartsend translate="label" module="logistics">
+                    <label>Smart Send ApS</label>
+                    <comment><![CDATA[<div class="smartsend"><p style="background: #FFFFFF;border: 1px solid orange;font-weight: bold; padding: 20px;width:55%">If you don't have a Smart Send subscription please create one at our website: <a href="http://www.smartsend.dk" target="_blank">Smart Send</a></p></div>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>90</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </username>
+                        <licensekey translate="label">
+                            <label>Licensekey</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </licensekey>
+                        <combinepdf translate="label">
+                            <label>Merge labels from multiple orders</label>
+                            <comment>Generate PDF file containing all labels or create a single PDF file for each order</comment>
+                            <source_model>logistics/system_combinePdf</source_model>
+                            <frontend_type>radios</frontend_type>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </combinepdf>
+                        <listformat translate="label">
+                            <label>Dropdown format</label>
+                            <comment>How the pickup points are listed during checkout</comment>
+                            <source_model>logistics/system_listformat</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>113</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </listformat>
+                        <status translate="label">
+                            <label>Set order status after label print</label>
+                            <source_model>logistics/system_status</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>114</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </status>
+                        <sendemail translate="label">
+                            <label>Send shipment email</label>
+                            <comment>Send system shipment email to the customer after generating label</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>115</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sendemail>
+                        <includeordercomment translate="label">
+                            <label>Include order comment on label</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>116</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </includeordercomment>
+                    </fields>
+                </smartsend>
+                <smartsendpostdanmark translate="label" module="logistics">
+                    <label>Smart Send - Post Danmark</label>
+                    <comment><![CDATA[<div class="smartsend"><p style="background: #FFFFFF;border: 1px solid orange;font-weight: bold; padding: 20px;width:55%">This shipping method may only be used if a valid Smart Send licence is purchased. Please see <a href="http://www.smartsend.dk" target="_blank">Smart Send</a> for further information.</p></div>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>91</sort_order>
+                    <show_in_default>1</show_in_default>  
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Carrier title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>115</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <price translate="label">
+                            <label>Table rate</label>
+                            <comment>Countries can be entered as a comma-separated list in ISO 3166-1 alpha-2 format. Use * for all valid countries.</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>smartsend_logistics_block_adminhtml_shipping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price>
+                        <cheapestexpensive translate="label">
+                            <label>Handle multiple rates for same shipping method</label>
+                           	<comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <source_model>logistics/system_orderOption</source_model>
+                            <frontend_type>radios</frontend_type>
+                            <sort_order>125</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cheapestexpensive>
+                         <excludetax translate="label">
+                            <label>Exclude from VAT</label>
+                            <comment>Excluded private shipping methods to Denmark from VAT</comment>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <frontend_type>select</frontend_type> 
+                            <sort_order>129</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </excludetax>
+                        <heading_services translate="label">
+							<label>Services</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>135</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_services>
+						<format translate="label">
+                            <label>Label format</label>
+                            <source_model>logistics/system_pacsoftformat</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </format>
+						<quickid translate="label">
+                            <label>Pacsoft QuickID</label>
+                            <validate>validate-alphanum</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>145</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </quickid>
+                        <waybillid translate="label">
+                            <label>Waybill ID</label>
+                            <comment>Either just an id or a semicolon separated list of 'country,id' (* is all countries). Eg: SE,123;NO,321;*,44</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>146</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </waybillid>
+						<notemail translate="label">
+                            <label>Email notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notemail>
+                        <notesms translate="label">
+                            <label>SMS notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>155</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notesms>
+                        <prenote translate="label">
+                            <label>Pre-notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </prenote>
+						<prenote_receiver translate="label">
+							<label>Pre-notification receiver</label>
+							<comment>Leave blank if receiver should be the user</comment>
+							<frontend_type>Text</frontend_type>
+							<validate>validate-email</validate>
+							<sort_order>165</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_receiver>
+						<prenote_sender translate="label">
+							<label>Pre-notification sender</label>
+							<frontend_type>Text</frontend_type>
+							<validate>validate-email</validate>
+							<sort_order>170</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_sender>
+						<prenote_message translate="label">
+							<label>Pre-notification message</label>
+							<frontend_type>textarea</frontend_type>
+							<sort_order>171</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_message>
+						<flexdelivery translate="label">
+							<label>Flex delivery</label>
+							<comment>Enable flex delivery for the selected shipping methods</comment>
+							<frontend_type>multiselect</frontend_type>
+							<source_model>logistics/system_postdanmark_flexdelivery</source_model>
+							<sort_order>172</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<can_be_empty>1</can_be_empty><!-- Allow flexdelivery to be disabled -->
+						</flexdelivery>
+						<heading_return translate="label">
+							<label>Return</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>175</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_return>
+						<return translate="label">
+                            <label>Return methode</label>
+                            <comment>Determines what carrier handles return packages</comment>
+                            <source_model>logistics/system_return</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </return>
+                    </fields>
+                </smartsendpostdanmark>
+                <smartsendgls translate="label" module="logistics">
+                    <label>Smart Send - GLS</label>
+                    <comment><![CDATA[<div class="smartsend"><p style="background: #FFFFFF;border: 1px solid orange;font-weight: bold; padding: 20px;width:55%">This shipping method may only be used if a valid Smart Send licence is purchased. Please see <a href="http://www.smartsend.dk" target="_blank">Smart Send</a> for further information.</p></div>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>92</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>131</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Carrier title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>132</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <price translate="label">
+                            <label>Table rate</label>
+                            <comment>Countries can be entered as a comma-separated list in ISO 3166-1 alpha-2 format. Use * for all valid countries.</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>smartsend_logistics_block_adminhtml_shipping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>133</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price>
+                        <cheapestexpensive translate="label">
+                            <label>Handle multiple rates for same shipping method</label>
+                           	<comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <source_model>logistics/system_orderOption</source_model>
+                            <frontend_type>radios</frontend_type>
+                            <sort_order>134</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cheapestexpensive>
+                        <heading translate="label">
+							<label>Services</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>137</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading>
+                        <notemail translate="label">
+                            <label>Email notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>138</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notemail>
+                        <notesms translate="label">
+                            <label>SMS notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>139</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notesms>
+                        <heading_return translate="label">
+							<label>Return</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>140</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_return>
+						<return translate="label">
+                            <label>Return methode</label>
+                            <comment>Determines what carrier handles return packages</comment>
+                            <source_model>logistics/system_return</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>141</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </return>
+                    </fields>
+                </smartsendgls>
+                <smartsendbring translate="label" module="logistics">
+                    <label>Smart Send - Bring</label>
+                    <comment><![CDATA[<div class="smartsend"><p style="background: #FFFFFF;border: 1px solid orange;font-weight: bold; padding: 20px;width:55%">This shipping method may only be used if a valid Smart Send licence is purchased. Please see <a href="http://www.smartsend.dk" target="_blank">Smart Send</a> for further information.</p></div>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>93</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>151</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Carrier title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>152</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <price translate="label">
+                            <label>Table rate</label>
+                            <comment>Countries can be entered as a comma-separated list in ISO 3166-1 alpha-2 format. Use * for all valid countries.</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>smartsend_logistics_block_adminhtml_shipping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>153</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price>
+                        <cheapestexpensive translate="label">
+                            <label>Handle multiple rates for same shipping method</label>
+                           	<comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <source_model>logistics/system_orderOption</source_model>
+                            <frontend_type>radios</frontend_type>
+                            <sort_order>154</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cheapestexpensive>
+                        <heading translate="label">
+							<label>Services</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>156</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading>
+                        <notemail translate="label">
+                            <label>Email notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>157</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notemail>
+                        <notesms translate="label">
+                            <label>SMS notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>158</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notesms>
+                        <heading_return translate="label">
+							<label>Return</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>159</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_return>
+						<return translate="label">
+                            <label>Return methode</label>
+                            <comment>Determines what carrier handles return packages</comment>
+                            <source_model>logistics/system_return</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </return>
+                    </fields>
+                </smartsendbring>
+                 <smartsendposten translate="label" module="logistics">
+                    <label>Smart Send - Posten</label>
+                    <comment><![CDATA[<div class="smartsend"><p style="background: #FFFFFF;border: 1px solid orange;font-weight: bold; padding: 20px;width:55%">This shipping method may only be used if a valid Smart Send licence is purchased. Please see <a href="http://www.smartsend.dk" target="_blank">Smart Send</a> for further information.</p></div>]]></comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>96</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>601</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Carrier title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>602</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <price translate="label">
+                            <label>Table rate</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>smartsend_logistics_block_adminhtml_shipping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>603</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </price>
+                        <cheapestexpensive translate="label">
+                            <label>Handle multiple rates for same shipping method</label>
+                           	<comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <comment>If multiple rates are valid for the same method, use either the cheapest or the most expensive rate</comment>
+                            <source_model>logistics/system_orderOption</source_model>
+                            <frontend_type>radios</frontend_type>
+                            <sort_order>604</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cheapestexpensive>
+                        <heading translate="label">
+							<label>Services</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>607</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading>
+						<format translate="label">
+                            <label>Label format</label>
+                            <source_model>logistics/system_pacsoftformat</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>608</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </format>
+						<quickid translate="label">
+                            <label>Pacsoft QuickID</label>
+                            <validate>validate-alphanum</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>609</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </quickid>
+                        <waybillid translate="label">
+                            <label>Waybill ID</label>
+                            <comment>Either just an id or a semicolon separated list of 'country,id' (* is all countries). Eg: SE,123;NO,321;*,44</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>610</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </waybillid>
+						<notemail translate="label">
+                            <label>Email notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>611</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notemail>
+                        <notesms translate="label">
+                            <label>SMS notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>612</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notesms>
+                        <prenote translate="label">
+                            <label>Pre-notification</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>613</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </prenote>
+						<prenote_receiver translate="label">
+							<label>Pre-notification receiver</label>
+							<comment>Leave blank if receiver should be the user</comment>
+							<frontend_type>Text</frontend_type>
+							<validate>validate-email</validate>
+							<sort_order>614</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_receiver>
+						<prenote_sender translate="label">
+							<label>Pre-notification sender</label>
+							<frontend_type>Text</frontend_type>
+							<validate>validate-email</validate>
+							<sort_order>615</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_sender>
+						<prenote_message translate="label">
+							<label>Pre-notification message</label>
+							<frontend_type>textarea</frontend_type>
+							<sort_order>616</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<depends>
+								<prenote>1</prenote>
+							</depends>
+						</prenote_message>
+						<flexdelivery translate="label">
+							<label>Flex delivery</label>
+							<comment>Enable flex delivery for the selected shipping methods</comment>
+							<frontend_type>multiselect</frontend_type>
+							<source_model>logistics/system_posten_flexdelivery</source_model>
+							<sort_order>617</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<can_be_empty>1</can_be_empty><!-- Allow flexdelivery to be disabled -->
+						</flexdelivery>
+						<heading_return translate="label">
+							<label>Return</label>
+							<frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+							<sort_order>618</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</heading_return>
+						<return translate="label">
+                            <label>Return methode</label>
+                            <comment>Determines what carrier handles return packages</comment>
+                            <source_model>logistics/system_return</source_model>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>619</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </return>
+                    </fields>
+                </smartsendposten>
+            </groups>
+        </carriers>
+    </sections>
+</config>

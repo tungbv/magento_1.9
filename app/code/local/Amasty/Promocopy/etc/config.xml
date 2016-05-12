@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promocopy
+ */
+-->
+<config>
+    <modules>
+        <Amasty_Promocopy>
+            <version>1.0.2</version>
+        </Amasty_Promocopy>
+    </modules>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Amasty_Promocopy after="Mage_Adminhtml">Amasty_Promocopy_Adminhtml</Amasty_Promocopy>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Amasty_Promocopy>
+                    <files>
+                        <default>Amasty_Promocopy.csv</default>
+                    </files>
+                </Amasty_Promocopy>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ampromocopy translate="title" module="ampromocopy">
+                                            <title>Promotions Manager</title>
+                                        </ampromocopy>
+                                    </children>
+                                </config>
+                            </children>
+                        </system> 
+                     </children>
+                </admin> 
+            </resources>
+        </acl>
+    </adminhtml>
+    
+    <global>
+        <models>
+            <ampromocopy>
+                <class>Amasty_Promocopy_Model</class>
+                <resourceModel>ampromocopy_mysql4</resourceModel>
+            </ampromocopy>
+            <ampromocopy_mysql4>
+                <class>Amasty_Promocopy_Model_Mysql4</class>
+            </ampromocopy_mysql4>
+        </models>
+        
+		<resources>
+             <ampromocopy_setup>
+                <setup>
+                    <module>Amasty_Promocopy</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ampromocopy_setup>
+		    <ampromocopy_write>
+		        <connection><use>core_write</use></connection>
+		    </ampromocopy_write>
+		    <ampromocopy_read>
+		        <connection><use>core_read</use></connection>
+		    </ampromocopy_read>
+		</resources>
+		  
+        <blocks>
+            <ampromocopy>
+                <class>Amasty_Promocopy_Block</class>
+            </ampromocopy>
+            
+            <adminhtml>
+                <rewrite>
+                    <promo_quote_grid>Amasty_Promocopy_Block_Adminhtml_Promo_Quote_Grid</promo_quote_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        
+        <helpers>
+            <ampromocopy>
+                <class>Amasty_Promocopy_Helper</class>
+            </ampromocopy>
+        </helpers>
+    </global>
+    
+    <default>
+        <ampromocopy>
+           <default>
+                <columns></columns>
+                <sort></sort>
+                <active_first></active_first>
+           </default>
+        </ampromocopy>
+    </default>
+    
+</config>

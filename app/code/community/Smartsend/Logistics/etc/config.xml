@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Smartsend_Logistics>
+            <version>7.1.0rc2</version>
+        </Smartsend_Logistics>
+    </modules>
+    <frontend>
+        <translate>
+            <modules>
+                <Smartsend_Logistics>
+                    <files>
+                        <default>Smartsend_Logistics.csv</default>      <!--smartsend csv -->
+                    </files>
+                </Smartsend_Logistics>
+            </modules>
+        </translate>
+        <routers>
+            <logistics>
+                <use>standard</use>
+                <args>
+                    <module>Smartsend_Logistics</module>                <!--smartsend module -->
+                    <frontName>logistics</frontName>
+                </args>
+            </logistics>
+        </routers>
+        <layout>
+            <updates>
+                <logistics>
+                    <file>logistics.xml</file>                          <!--smartsend fontend xml file -->
+                </logistics>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Smartsend_Logistics after="Mage_Adminhtml">Smartsend_Logistics</Smartsend_Logistics>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Smartsend_Logistics>
+                    <files>
+                        <default>Smartsend_Logistics.csv</default>
+                    </files>
+                </Smartsend_Logistics>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>               <!--smartsend permissions -->
+                </all>
+                <admin>
+                    <children>
+                        <Smartsend_Logistics>
+                            <title>Logistics Module</title>
+                            <sort_order>10</sort_order>
+                        </Smartsend_Logistics>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <logistics>
+                    <file>logistics.xml</file>                  <!--smartsend admin layout -->
+                </logistics>
+            </updates>
+        </layout>
+		<events>
+			<!-- Used to add a button in the right corner of order_view -->
+			<adminhtml_widget_container_html_before>
+				<observers>
+					<adminhtml_widget_container_html_before>
+						<class>logistics/observer</class>
+						<type>model</type>
+						<method>adminhtmlWidgetContainerHtmlBefore</method>
+					</adminhtml_widget_container_html_before>
+				</observers>
+			</adminhtml_widget_container_html_before>
+			<!-- Used to add a mass action to the sales order grid -->
+			<core_block_abstract_prepare_layout_before>
+				<observers>
+					<core_block_abstract_prepare_layout_before>
+						<type>singleton</type>
+						<class>logistics/observer</class>
+						<method>addMassAction</method>
+					</core_block_abstract_prepare_layout_before>
+				</observers>
+			</core_block_abstract_prepare_layout_before>
+		</events>
+    </adminhtml> 
+    <global>
+        <events>
+            <checkout_controller_onepage_save_shipping_method>            <!-- overriding checkout save shipping method observer  -->
+                <observers>
+                    <checkout_controller_onepage_save_shipping_method>
+                        <type>model</type>
+                        <class>logistics/observer</class>
+                        <method>saveShippingMethod</method>
+                    </checkout_controller_onepage_save_shipping_method>
+                </observers>
+            </checkout_controller_onepage_save_shipping_method>
+            <sales_model_service_quote_submit_after>                               <!-- overriding sales submit observer  -->
+                <observers>
+                    <checkout_controller_onepage_save_shipping_method>
+                        <type>model</type>
+                        <class>logistics/observer</class>
+                        <method>saveOrderAfter</method>
+                    </checkout_controller_onepage_save_shipping_method>
+                </observers>
+            </sales_model_service_quote_submit_after>
+            <sales_order_load_after>                             <!-- overriding checkout sales order observer  -->
+                <observers>
+                    <sales_order_load_after>
+                        <type>model</type>
+                        <class>logistics/observer</class>
+                        <method>loadOrderAfter</method>
+                    </sales_order_load_after>
+                </observers>
+            </sales_order_load_after>
+            <sales_quote_load_after>                           <!-- overriding checkout sales quote  observer  -->
+                <observers>
+                    <sales_quote_load_after>
+                        <type>model</type>
+                        <class>logistics/observer</class>
+                        <method>loadQuoteAfter</method>
+                    </sales_quote_load_after>
+                </observers>
+            </sales_quote_load_after>
+        </events>
+        <models>
+            <logistics>
+                <class>Smartsend_Logistics_Model</class>
+                <resourceModel>logistics_mysql4</resourceModel>
+            </logistics>
+            <logistics_mysql4>
+                <class>Smartsend_Logistics_Model_Mysql4</class>
+                <entities>
+                    <postdanmark>
+                        <table>smartsend_pickup</table>
+                    </postdanmark>
+                    <posten>
+                        <table>smartsend_pickup</table>
+                    </posten>
+                    <gls>
+                        <table>smartsend_pickup</table>
+                    </gls>
+                    <bring>
+                        <table>smartsend_pickup</table>
+                    </bring> 
+                    <flex>
+                        <table>smartsend_flexdelivery</table>
+                    </flex>
+                </entities>
+            </logistics_mysql4>
+        </models>
+        <resources>
+            <logistics_setup>
+                <setup>
+                    <module>Smartsend_Logistics</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </logistics_setup>
+            <logistics_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </logistics_write>
+            <logistics_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </logistics_read>
+        </resources>
+        <blocks>
+            <logistics>
+                <class>Smartsend_Logistics_Block</class>
+            </logistics>
+        </blocks>
+        <helpers>
+            <logistics>
+                <class>Smartsend_Logistics_Helper</class>
+            </logistics>
+        </helpers>
+        <models>
+            <tax>
+                <rewrite>
+                    <sales_total_quote_shipping>Smartsend_Logistics_Model_Rewrite_Sales_Total_Quote_Shipping</sales_total_quote_shipping>
+                </rewrite>
+            </tax>
+        </models>  
+        <models>
+            <tax>
+                <rewrite>
+                    <sales_total_quote_tax>Smartsend_Logistics_Model_Rewrite_Sales_Total_Quote_Tax</sales_total_quote_tax>
+                </rewrite>
+            </tax>
+        </models>
+        <template>
+            <email>
+                 <smartsend_new_shipment_email translate="label" module="adminhtml">
+                    <label>Smart Send: New Shipment</label>
+                    <file>smartsend_new_shipment_email.html</file>
+                    <type>html</type>
+                </smartsend_new_shipment_email>
+            </email>
+        </template>
+    </global>
+    <default>                                             <!-- default for the carriers  -->
+        <carriers>
+        	<smartsend>
+                <username></username>
+                <licencekey></licencekey>
+                <combinepdf>1</combinepdf>
+                <listformat>1</listformat>                      <!-- is listtype #Company, #Street, #Zipcode #City-->
+                <status></status>                      			<!-- order status -->
+                <sendemail>0</sendemail>                      	<!-- send email with shipments -->
+                <includeordercomment>1</includeordercomment>    <!-- include order comment on label -->
+            </smartsend>
+            <smartsendpostdanmark>
+                <active>0</active>                             <!-- is not active -->
+                <model>logistics/carrier_postdanmark</model>   
+                <title>Post Danmark</title>                     <!-- title -->
+                <cheapestexpensive>0</cheapestexpensive>        <!-- is cheapest -->
+                <excludetax>0</excludetax>						<!-- Exclude from TAX -->
+                <format>pdf</format>                            <!-- format is PDF file -->
+                <quickid>1</quickid>							<!-- Default QuickId=1 -->
+                <waybillid></waybillid>							<!-- Default WaybillId=NULL -->
+                <notemail>1</notemail>                          <!-- Email notification is ON -->
+                <notesms>1</notesms>                            <!-- SMS notification is ON -->
+                <prenote>0</prenote>                            <!-- pre-notification is OFF -->
+                <flexdelivery>smartsendpostdanmark_lastmile</flexdelivery>	<!-- Flexdelivery is activated for lastmile -->
+                <return></return>            					<!-- standard return shipping method -->
+            </smartsendpostdanmark>
+            <smartsendposten>
+                <active>0</active>
+                <model>logistics/carrier_posten</model>
+                <title>Posten</title>
+                <cheapestexpensive>0</cheapestexpensive>
+                <format>pdf</format>
+                <quickid>1</quickid>
+                <waybillid></waybillid>
+                <notemail>1</notemail>
+                <notesms>1</notesms>
+                <prenote>0</prenote>
+                <flexdelivery></flexdelivery>
+                <return></return>
+            </smartsendposten>
+            <smartsendgls>
+                <active>0</active>
+                <model>logistics/carrier_gls</model>
+                <title>GLS</title>
+                <cheapestexpensive>0</cheapestexpensive>
+                <notemail>1</notemail>
+                <notesms>1</notesms>
+                <return></return>
+            </smartsendgls>
+            <smartsendbring>
+                <active>0</active>
+                <model>logistics/carrier_bring</model>
+                <title>Bring</title>
+                <cheapestexpensive>0</cheapestexpensive>
+                <notemail>1</notemail>
+                <notesms>1</notesms>
+                <return></return>
+            </smartsendbring>
+        </carriers>
+    </default>
+</config>

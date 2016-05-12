@@ -1,0 +1,126 @@
+<?php
+/**
+ * Smartsend_Logistics
+ *
+ * This source file is subject to the GNU General Public License v3.0
+ * that is bundled with this package in the file license.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@smartsend.dk so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the plugin to newer
+ * versions in the future. If you wish to customize the plugin for your
+ * needs please refer to http://www.smartsend.dk
+ *
+ * @folder		/app/design/frontend/default/default/template/logistics/pickup.phtml
+ * @category	Smartsend
+ * @package		Smartsend_Logistics
+ * @author		Anders Bilfeldt
+ * @url			www.smartsend.dk
+ */
+$_rate 	= $this->getRate();					//shipping method rate
+$method = $_rate->getMethod();				//shipping method 
+if ($method == 'pickup') {  								//if shipping method is pickup then the pickup points will show
+    $_code 			= $this->getMethodCode();				//shipping method code
+    $carrier 		= $this->getMethodInstance();
+    $pickupData 	= $this->getQuote()->getPickupData();	//shipping method pickup
+    $result 		= $this->getPickupData();				//shipping method pickup data
+
+    if (!isset($pickupData['store'])) {
+        $pickupData['store'] = -1;
+    }
+    if (!isset($pickupData['name'])) {
+        $pickupData['name'] = '';
+    }
+    ?>
+    <ul class="form-list" id="shipping_form_<?php echo $_rate->getCode() ?>" style="display:none;">
+        <li>
+            <?php
+            if (count($result) <= 0 || $result == FALSE) {               //if no pickup data available
+                ?>
+                <span id="no_record_<?php echo $_rate->getCode() ?>"><?php echo $this->__('Shipping to closest pickup point'); ?></span>
+               <!-- <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        var rm = jQuery("#no_record_<?php //echo $_rate->getCode()  ?>").parent('li').parent('ul').parent('li').parent('ul').parent('dd');
+                        jQuery(rm).prev('dt').remove();
+                        jQuery(rm).remove();
+                        /* hack for onepagecheckout */
+                        var op = jQuery("#shipping_form_<?php //echo $_rate->getCode()  ?>").parent("dt");
+                        jQuery(op).prev("dd").remove();
+                        jQuery(op).remove();
+                        /* hack for onepagecheckout */
+                    });
+                </script>  -->
+                <?php
+            } else {                  //displaying pickup data
+                ?>
+                <label for="<?php echo $_code ?>_store" class="required"><em>*</em><?php echo $this->__('Select pickup point').':'; ?></label>
+                <span class="input-box">
+                    <select class="required-entry" name="shipping_pickup[store][<?php echo $_rate->getCode() ?>]">          <!-- table rate shipping code -->
+                        <option value=''><?php echo $this->__('Select pickup point'); ?></option>
+                        <?php
+                        foreach ($result as $key => $value) {
+                            $s = '';
+                            foreach ($value as $k => $val) {
+                                if ($k == 'zip_code') {
+                                    $s .= $val . " ";
+                                } else {
+                                    $s .= $val . ", ";
+                                }
+                            }
+                            ?>
+                            <option value='<?php echo $key ?>'><?php echo substr($s, 0, -2) ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </span>
+            <?php } ?>
+        </li>
+    </ul>
+<?php } ?>
+
+
+
+<?php
+$carrier = explode('_', $_rate->getCode());            //shipping method carrier
+
+if ($carrier[0] == 'smartsendpostdanmark' || $carrier[0] == 'smartsendposten') {  //if shipping method is smartsendposten or smartsendpostdanmark, then the Flex points will show
+    $_code = $this->getMethodCode();  //shipping method code
+
+    $carrier = $_rate->getCode();
+    $result = $this->getFlexData($carrier); //shipping method flex data
+    ?>
+    <ul class="form-list" id="shipping_form_<?php echo $_rate->getCode() ?>" style="display:none;">
+        <li>
+            <?php
+            if (count($result) > 0 || $result == true) {
+                //displaying flex data
+                ?>
+                <label for="<?php echo $_code ?>_store" class="required"><em>*</em><?php echo $this->__('Select flexdelivery option').':'; ?></label>
+                <span class="input-box">
+                    <select class="required-entry" name="shipping_flex[store][<?php echo $_rate->getCode() ?>]">          <!-- table rate shipping code -->
+                        <option value=''><?php echo $this->__('Select flexdelivery option'); ?></option>
+                        <?php
+                        foreach ($result as $key => $value) {
+                            $s = '';
+                            if ($value == 'zip_code') {
+                                $s .= $value . " ";
+                            } else {
+                                $s .= $value . ", ";
+                            }
+                            ?>
+                            <option value='<?php echo $key ?>'><?php echo substr($s, 0, -2) ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </span>
+    <?php } ?>
+        </li>
+    </ul>
+<?php } ?>

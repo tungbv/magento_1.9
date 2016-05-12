@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Promocopy
+ */
+-->
+<config>
+        <adminhtml>
+        <translate>
+            <modules>
+                <Amasty_Promocopy>
+                    <files>
+                        <default>Amasty_Promocopy.csv</default>
+                    </files>
+                </Amasty_Promocopy>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ampromocopy translate="title" module="ampromocopy">
+                                            <title>Promotions Manager</title>
+                                        </ampromocopy>
+                                    </children>
+                                </config>
+                            </children>
+                        </system> 
+                     </children>
+                </admin> 
+            </resources>
+        </acl>
+    </adminhtml>
+</config>

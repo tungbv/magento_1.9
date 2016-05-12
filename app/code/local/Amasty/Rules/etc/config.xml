@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2016 Amasty (https://www.amasty.com)
+ * @package Amasty_Rules
+ */
+-->
+<config>
+    <modules>
+        <Amasty_Rules>
+            <version>1.8.4</version>
+        </Amasty_Rules>
+    </modules>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Amasty_Rules>
+                    <files>
+                        <default>Amasty_Rules.csv</default>
+                    </files>
+                </Amasty_Rules>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <amrules translate="title" module="amrules">
+                                            <title>Special Promotions</title>
+                                        </amrules>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                     </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <global>
+        <resources>
+            <amrules_setup>
+                <setup>
+                    <module>Amasty_Rules</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </amrules_setup>
+
+            <amrules_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </amrules_write>
+
+            <amrules_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </amrules_read>
+        </resources>
+
+        <models>
+            <amrules>
+                <class>Amasty_Rules_Model</class>
+            </amrules>
+            <amrules_discount>
+                <class>Amasty_Rules_Model_Rule</class>
+            </amrules_discount>
+            <salesrule>
+                <rewrite>
+                    <quote_discount>Amasty_Rules_Model_SalesRule_Quote_Discount</quote_discount>
+                    <rule_condition_product>Amasty_Rules_Model_SalesRule_Rule_Condition_Product</rule_condition_product>
+                    <rule_condition_product_subselect>Amasty_Rules_Model_SalesRule_Rule_Condition_Product_Subselect</rule_condition_product_subselect>
+                    <rule_condition_product_combine>Amasty_Rules_Model_SalesRule_Rule_Condition_Product_Combine</rule_condition_product_combine>
+                </rewrite>
+            </salesrule>
+           <!-- <catalogrule>
+                <rewrite>
+                    <rule_condition_product>Amasty_Rules_Model_CatalogRule_Rule_Condition_Product</rule_condition_product>
+                </rewrite>
+            </catalogrule> -->           
+        </models>
+
+        <blocks>
+            <amrules>
+                <class>Amasty_Rules_Block</class>
+            </amrules>
+
+            <adminhtml>
+                <rewrite>
+                    <promo_quote_edit>Amasty_Rules_Block_Adminhtml_Promo_Quote_Edit</promo_quote_edit>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+
+        <helpers>
+            <amrules>
+                <class>Amasty_Rules_Helper</class>
+            </amrules>
+        </helpers>
+
+        <events>
+            <salesrule_validator_process>
+            <observers>
+                <amasty_rules_model_observer>
+                    <type>singleton</type>
+                    <class>amrules/observer</class>
+                    <method>handleValidation</method>
+                </amasty_rules_model_observer>
+            </observers>
+            </salesrule_validator_process>
+            <adminhtml_block_salesrule_actions_prepareform>
+                <observers>
+                    <amasty_rules_model_observer>
+                        <type>singleton</type>
+                        <class>amrules/observer</class>
+                        <method>handleFormCreation</method>
+                    </amasty_rules_model_observer>
+                </observers>
+            </adminhtml_block_salesrule_actions_prepareform>
+            <salesrule_rule_save_before>
+                <observers>
+                    <amasty_rules_model_observer>
+                        <type>singleton</type>
+                        <class>amrules/observer</class>
+                        <method>saveBefore</method>
+                    </amasty_rules_model_observer>
+                </observers>
+            </salesrule_rule_save_before>
+        </events>
+        <sales>
+            <quote>
+                <totals>
+                    <discount>
+                        <renderer>amrules/checkout_discount</renderer>
+                    </discount>
+                </totals>
+            </quote>
+        </sales>
+    </global>
+
+    <frontend>
+        <translate>
+            <modules>
+                <Amasty_Rules>
+                    <files>
+                        <default>Amasty_Rules.csv</default>
+                    </files>
+                </Amasty_Rules>
+            </modules>
+        </translate>
+    </frontend>
+
+    <default>
+        <amrules>
+           <general>
+                <skip_special_price>0</skip_special_price>
+                <breakdown>1</breakdown>
+                <open_discount_label>0</open_discount_label>
+                <breakdown_products>0</breakdown_products>
+                <bundle_separate>0</bundle_separate>
+                <skip_special_price_configurable>0</skip_special_price_configurable>
+                <skip_tier_price>0</skip_tier_price>
+           </general>
+        </amrules>
+    </default>
+
+</config>

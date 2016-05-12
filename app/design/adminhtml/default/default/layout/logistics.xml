@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <checkout_onepage_index>
+        <reference name='head'>
+            <reference name="head">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>logistics/jquery-1.6.4.min.js</name>
+                </action>
+                <action method="addItem">
+                    <type>js</type>
+                    <name>logistics/noconflict.js</name>
+                </action>
+            </reference>
+        </reference>
+        <reference name='checkout.onepage.shipping_method.available'>     <!-- available shipping methods  -->
+            <action method='setTemplate'>
+                <template>logistics/checkout/onepage/shipping_method/available.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_index>
+    <checkout_cart_index>
+        <reference name='checkout.cart.shipping'>     <!-- available shipping methods  -->
+            <action method='setTemplate'>
+                <template>logistics/checkout/cart/shipping.phtml</template>
+            </action>
+        </reference>
+    </checkout_cart_index> 
+    <checkout_onepage_shippingmethod>
+        <reference name='root'>          <!-- available shipping methods  -->
+            <action method='setTemplate'>
+                <template>logistics/checkout/onepage/shipping_method/available.phtml</template>
+            </action>
+        </reference>
+    </checkout_onepage_shippingmethod>
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>js</type>
+                <name>logistics/jquery-1.6.4.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>js</type>
+                <name>logistics/noconflict.js</name>
+            </action>
+        </reference>
+        <reference name ="choose-shipping-method">
+            <action method="setTemplate">
+                <template>logistics/onestepcheckout/shipping_method.phtml</template>
+            </action>
+        </reference>
+    </onestepcheckout_index_index>
+    <onestepcheckout_ajax_save_billing>
+        <reference name="choose-shipping-method">
+            <action method="setTemplate">                    
+                <template>logistics/onestepcheckout/shipping_method.phtml</template>       <!-- show shipping methods  -->
+            </action>
+        </reference>
+    </onestepcheckout_ajax_save_billing>
+    <adminhtml_sales_order_view>                  <!-- sales order view update -->
+        <reference name="order_info">
+            <action method="setTemplate">
+                <template>logistics/sales/order/view/info.phtml</template>
+            </action> 
+        </reference>
+        <reference name="sales_order_tabs">
+ 			<block type="logistics/adminhtml_sales_order_view_tab_info" name="logistics_order_view_info_tab" template="logistics/sales/order/view/tab/info.phtml" ></block>
+            <action method="addTab">
+            	<name>smart_send_pickup</name>
+            	<block>logistics_order_view_info_tab</block>
+            </action>
+        </reference>
+   </adminhtml_sales_order_view>
+</layout> 
